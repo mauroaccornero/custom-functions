@@ -1,0 +1,14 @@
+import tap from 'tap'
+import removeDays from "./removeDays"
+
+const dateString = "2023-01-03"
+const date = new Date(dateString);
+
+tap.equal(removeDays(date,1).getDate(), 2 )
+tap.equal(removeDays(date,6).getDate(), 28)
+tap.equal(removeDays(date,1).getFullYear(), 2023 )
+tap.equal(removeDays(date,1).getUTCMonth(), 0 )
+
+tap.equal(date.getDate(), new Date(dateString).getDate() )
+tap.equal(date.getFullYear(), new Date(dateString).getFullYear() )
+tap.equal(date.getUTCMonth(), new Date(dateString).getUTCMonth() )
