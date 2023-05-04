@@ -1,7 +1,9 @@
-import getNextSunday from "./utils/getNextSunday";
 import getLastOfMonths from "./utils/getLastOfMonths";
 import addDays from "./utils/addDays";
-import {Store} from "./types";
+import {Store} from "./types/Store";
+import getNextDayOfWeek from "./utils/getNextDayOfWeek";
+import {Options} from "./types/Options";
+import defaultOptions from "./constants/defaultOptions";
 
 /**
  *
@@ -9,15 +11,16 @@ import {Store} from "./types";
  *
  * @param startDate - initial Date of range
  * @param endDate - final Date of range
+ * @param options - options object
  * @param store - store weeks array
  */
-function getWeeksFromRange(startDate:Date,endDate:Date, store:Store = []){
+function getWeeksFromRange(startDate:Date,endDate:Date,options: Options = defaultOptions, store:Store = []){
 
     if(startDate.getTime() > endDate.getTime()){
         throw new Error("startDate > endDate")
     }
 
-    const nextSunday = getNextSunday(startDate)
+    const nextSunday = getNextDayOfWeek(startDate, options.weekEndsOn)
     const endOfMonthDate = getLastOfMonths(startDate)
     let endOfWeekDate = nextSunday;
 
@@ -34,7 +37,7 @@ function getWeeksFromRange(startDate:Date,endDate:Date, store:Store = []){
     store.push({"s":startDate,"e":endOfWeekDate})
 
     if(endOfWeekDate.getTime() < endDate.getTime()){
-        getWeeksFromRange(newStartDate,endDate,store)
+        getWeeksFromRange(newStartDate,endDate,options,store)
     }
 
     return store
